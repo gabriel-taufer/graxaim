@@ -31,7 +31,8 @@ fn test_use_profile() {
         .arg("staging")
         .assert()
         .success()
-        .stdout(predicate::str::contains("Switched to profile 'staging'"));
+        .stderr(predicate::str::contains("Switched to profile 'staging'"))
+        .stdout(predicate::str::contains("export KEY="));
 
     // Check symlink points to correct file
     let symlink = temp.path().join(".env");
@@ -63,5 +64,9 @@ fn test_use_outside_project() {
         .arg("local")
         .assert()
         .failure()
-        .stderr(predicate::str::contains("not initialized").or(predicate::str::contains("not found")));
+        .stderr(
+            predicate::str::contains("not initialized")
+                .or(predicate::str::contains("not found"))
+                .or(predicate::str::contains("Cannot find project root")),
+        );
 }

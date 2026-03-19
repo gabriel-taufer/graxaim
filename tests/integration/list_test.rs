@@ -20,6 +20,15 @@ fn test_list_profiles() {
         .assert()
         .success();
 
+    // Activate a profile so the list output shows "(active)"
+    Command::cargo_bin("graxaim")
+        .unwrap()
+        .current_dir(temp.path())
+        .arg("use")
+        .arg("local")
+        .assert()
+        .success();
+
     let mut cmd = Command::cargo_bin("graxaim").unwrap();
     cmd.current_dir(temp.path())
         .arg("list")
