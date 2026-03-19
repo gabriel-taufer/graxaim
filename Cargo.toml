@@ -11,6 +11,10 @@ repository = "https://github.com/gabriel-taufer/graxaim"
 name = "graxaim"
 path = "src/main.rs"
 
+[lib]
+name = "graxaim"
+path = "src/lib.rs"
+
 [dependencies]
 # CLI framework
 clap = { version = "4.5", features = ["derive", "env"] }
@@ -27,10 +31,12 @@ skim = "0.10"
 
 # Encryption
 age = "0.10"
-secrecy = "0.8"
+secrecy = { version = "0.8", features = ["serde"] }
+rpassword = "7"
 
 # Regex for audit
 regex = "1.10"
+lazy_static = "1.4"
 
 # File watching (future)
 notify = "6.1"

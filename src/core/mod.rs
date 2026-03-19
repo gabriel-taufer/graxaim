@@ -1,5 +1,10 @@
+pub mod auditor;
 pub mod config;
+pub mod differ;
+pub mod encryption;
 pub mod env_file;
 pub mod hooks;
 pub mod profile;
 pub mod project;
+pub mod schema;
+pub mod shell;
