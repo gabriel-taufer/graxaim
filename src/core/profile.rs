@@ -204,6 +204,7 @@ impl Profile {
     }
 
     /// Read the current symlink target
+    #[allow(dead_code)]
     pub fn read_symlink_target(project: &Project) -> Result<Option<String>> {
         let symlink_path = project.env_symlink_path();
 

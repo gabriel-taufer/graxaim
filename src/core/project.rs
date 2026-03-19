@@ -92,6 +92,7 @@ impl Project {
     }
 
     /// Check if project is initialized
+    #[allow(dead_code)]
     pub fn is_initialized(&self) -> bool {
         self.graxaim_dir().exists()
     }

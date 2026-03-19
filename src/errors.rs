@@ -31,6 +31,7 @@ pub enum GraxaimError {
     NoActiveProfile,
 
     #[error("Active profile '{0}' symlink points to non-existent file")]
+    #[allow(dead_code)]
     BrokenSymlink(String),
 
     #[error("Cannot find project root. Not in a git repository or .graxaim/ directory.")]

@@ -251,6 +251,7 @@ impl EnvFile {
     }
 
     /// Set or update a value
+    #[allow(dead_code)]
     pub fn set(&mut self, key: String, value: String) {
         if let Some(entry) = self.entries.iter_mut().find(|e| e.key == key) {
             entry.value = value;
@@ -265,6 +266,7 @@ impl EnvFile {
     }
 
     /// Remove a key
+    #[allow(dead_code)]
     pub fn remove(&mut self, key: &str) -> bool {
         let initial_len = self.entries.len();
         self.entries.retain(|e| e.key != key);

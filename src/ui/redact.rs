@@ -39,6 +39,7 @@ pub fn redact_value(value: &str, min_length: usize) -> String {
 }
 
 /// Determine if a key suggests it contains sensitive data
+#[allow(dead_code)]
 pub fn is_sensitive_key(key: &str) -> bool {
     let key_lower = key.to_lowercase();
 
@@ -63,6 +64,7 @@ pub fn is_sensitive_key(key: &str) -> bool {
 }
 
 /// Redact a value based on config and key name
+#[allow(dead_code)]
 pub fn redact_if_needed(value: &str, key: &str, config: &ProjectConfig) -> String {
     if !config.settings.redact_by_default {
         return value.to_string();
