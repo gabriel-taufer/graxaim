@@ -57,11 +57,17 @@ fn main() -> Result<()> {
 
         Commands::Audit { profile } => commands::audit::execute(profile),
 
-        Commands::Seal { profile, delete, force } => commands::seal::execute(&profile, delete, force),
+        Commands::Seal {
+            profile,
+            delete,
+            force,
+        } => commands::seal::execute(&profile, delete, force),
 
-        Commands::Unseal { profile, output, force } => {
-            commands::unseal::execute(&profile, output.as_deref(), force)
-        }
+        Commands::Unseal {
+            profile,
+            output,
+            force,
+        } => commands::unseal::execute(&profile, output.as_deref(), force),
     };
 
     if let Err(e) = result {

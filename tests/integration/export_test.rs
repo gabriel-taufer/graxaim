@@ -64,8 +64,16 @@ echo "ANOTHER_VAR=$ANOTHER_VAR"
         .unwrap();
 
     let result_stdout = String::from_utf8(result.stdout).unwrap();
-    assert!(result_stdout.contains("TEST_VAR=hello"), "Expected TEST_VAR=hello, got: {}", result_stdout);
-    assert!(result_stdout.contains("ANOTHER_VAR=world"), "Expected ANOTHER_VAR=world, got: {}", result_stdout);
+    assert!(
+        result_stdout.contains("TEST_VAR=hello"),
+        "Expected TEST_VAR=hello, got: {}",
+        result_stdout
+    );
+    assert!(
+        result_stdout.contains("ANOTHER_VAR=world"),
+        "Expected ANOTHER_VAR=world, got: {}",
+        result_stdout
+    );
 }
 
 #[test]
@@ -129,10 +137,19 @@ echo "BACKTICK=$BACKTICK"
         .unwrap();
 
     let result_stdout = String::from_utf8(result.stdout).unwrap();
-    
+
     // Verify values are preserved correctly
     assert!(result_stdout.contains("URL=https://example.com/path?query=value&other=123"));
-    assert!(result_stdout.contains("QUOTED=\"value with spaces\"") || result_stdout.contains("QUOTED=value with spaces"));
-    assert!(result_stdout.contains("DOLLAR_SIGN=price_$100") || result_stdout.contains("DOLLAR_SIGN=price_\\$100"));
-    assert!(result_stdout.contains("BACKTICK=no`command`here") || result_stdout.contains("BACKTICK=no\\`command\\`here"));
+    assert!(
+        result_stdout.contains("QUOTED=\"value with spaces\"")
+            || result_stdout.contains("QUOTED=value with spaces")
+    );
+    assert!(
+        result_stdout.contains("DOLLAR_SIGN=price_$100")
+            || result_stdout.contains("DOLLAR_SIGN=price_\\$100")
+    );
+    assert!(
+        result_stdout.contains("BACKTICK=no`command`here")
+            || result_stdout.contains("BACKTICK=no\\`command\\`here")
+    );
 }

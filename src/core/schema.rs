@@ -11,7 +11,7 @@ lazy_static! {
     /// Pre-compiled regex for URL validation
     static ref URL_PATTERN: Regex =
         Regex::new(r"^[a-zA-Z][a-zA-Z0-9+.-]*://[^\s/$.?#].[^\s]*$").unwrap();
-    
+
     /// Pre-compiled regex for email validation (RFC 5322-inspired)
     static ref EMAIL_PATTERN: Regex =
         Regex::new(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$").unwrap();
@@ -217,12 +217,12 @@ impl Schema {
     /// as an error.
     fn compile_patterns(&mut self) -> Result<()> {
         for (key, var) in &self.vars {
-            if let VarType::String { pattern: Some(pat), .. } = &var.var_type {
+            if let VarType::String {
+                pattern: Some(pat), ..
+            } = &var.var_type
+            {
                 let re = Regex::new(pat).map_err(|e| {
-                    GraxaimError::Custom(format!(
-                        "Invalid regex pattern for '{}': {}",
-                        key, e
-                    ))
+                    GraxaimError::Custom(format!("Invalid regex pattern for '{}': {}", key, e))
                 })?;
                 self.compiled_patterns.insert(key.clone(), re);
             }
@@ -531,9 +531,8 @@ fn infer_type(key: &str, value: &str) -> VarType {
     // Integer / port check
     if let Ok(n) = value.parse::<i64>() {
         let upper_key = key.to_uppercase();
-        let looks_like_port = upper_key == "PORT"
-            || upper_key.ends_with("_PORT")
-            || upper_key.contains("PORT");
+        let looks_like_port =
+            upper_key == "PORT" || upper_key.ends_with("_PORT") || upper_key.contains("PORT");
         if looks_like_port && (1..=65535).contains(&n) {
             return VarType::Port;
         }
@@ -566,7 +565,14 @@ fn infer_type(key: &str, value: &str) -> VarType {
 
 fn is_sensitive_key(key: &str) -> bool {
     let upper = key.to_uppercase();
-    let sensitive_suffixes = ["_KEY", "_SECRET", "_PASSWORD", "_TOKEN", "_PASS", "_PASSPHRASE"];
+    let sensitive_suffixes = [
+        "_KEY",
+        "_SECRET",
+        "_PASSWORD",
+        "_TOKEN",
+        "_PASS",
+        "_PASSPHRASE",
+    ];
     // Also flag keys that _begin_ with a sensitive word (e.g. SECRET_VALUE).
     let sensitive_prefixes = ["SECRET_", "PASSWORD_", "TOKEN_"];
     let exact_matches = ["PASSWORD", "SECRET", "TOKEN", "KEY"];
