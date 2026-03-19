@@ -1,0 +1,53 @@
+[package]
+name = "graxaim"
+version = "0.1.0"
+edition = "2021"
+authors = ["Gabriel"]
+description = "A local-first CLI tool that manages named .env profiles per project"
+license = "MIT"
+repository = "https://github.com/gabriel-taufer/graxaim"
+
+[[bin]]
+name = "graxaim"
+path = "src/main.rs"
+
+[dependencies]
+# CLI framework
+clap = { version = "4.5", features = ["derive", "env"] }
+
+# Config format
+toml = "0.8"
+serde = { version = "1.0", features = ["derive"] }
+
+# Colored output
+owo-colors = "4.0"
+
+# Fuzzy picker
+skim = "0.10"
+
+# Encryption
+age = "0.10"
+secrecy = "0.8"
+
+# Regex for audit
+regex = "1.10"
+
+# File watching (future)
+notify = "6.1"
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Terminal detection
+atty = "0.2"
+
+[dev-dependencies]
+assert_cmd = "2.0"
+predicates = "3.1"
+tempfile = "3.10"
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1
