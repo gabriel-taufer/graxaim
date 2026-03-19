@@ -28,6 +28,7 @@ impl HookPhase {
         }
     }
 
+    #[allow(dead_code)]
     fn description(&self) -> String {
         match self {
             HookPhase::Leave(profile) => format!("Leaving profile '{}'", profile),
@@ -42,8 +43,10 @@ impl HookPhase {
 pub struct HookRunner {
     pub hooks_dir: PathBuf,
     pub shell: String,
+    #[allow(dead_code)]
     pub timeout: Duration,
     pub enabled: bool,
+    pub redirect_stdout_to_stderr: bool,
 }
 
 impl HookRunner {
@@ -53,6 +56,7 @@ impl HookRunner {
             shell,
             timeout: Duration::from_secs(timeout_secs),
             enabled,
+            redirect_stdout_to_stderr: false,
         }
     }
 
@@ -165,18 +169,28 @@ impl HookRunner {
             project_root.to_string_lossy().to_string(),
         );
 
-        // Execute the hook
+        let stdout_cfg = if self.redirect_stdout_to_stderr {
+            Stdio::piped()
+        } else {
+            Stdio::inherit()
+        };
+
         let output = Command::new(&self.shell)
             .arg(&script_path)
             .envs(&env_vars)
             .current_dir(project_root)
             .stdin(Stdio::null())
-            .stdout(Stdio::inherit())
+            .stdout(stdout_cfg)
             .stderr(Stdio::inherit())
             .output();
 
         match output {
             Ok(output) => {
+                if self.redirect_stdout_to_stderr && !output.stdout.is_empty() {
+                    use std::io::Write;
+                    std::io::stderr().write_all(&output.stdout).ok();
+                }
+
                 if !output.status.success() {
                     let exit_code = output.status.code().unwrap_or(-1);
                     let error_msg = format!(

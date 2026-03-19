@@ -1,12 +1,17 @@
 use atty::Stream;
 use owo_colors::OwoColorize;
 
-/// Check if we should use colors
+/// Check if we should use colors on stdout
 pub fn should_use_colors() -> bool {
     atty::is(Stream::Stdout)
 }
 
-/// Print a success message
+/// Check if we should use colors on stderr
+pub fn should_use_colors_stderr() -> bool {
+    atty::is(Stream::Stderr)
+}
+
+/// Print a success message to stdout
 pub fn success(message: &str) {
     if should_use_colors() {
         println!("{} {}", "✓".green().bold(), message);
@@ -15,21 +20,39 @@ pub fn success(message: &str) {
     }
 }
 
+/// Print a success message to stderr
+pub fn success_err(message: &str) {
+    if should_use_colors_stderr() {
+        eprintln!("{} {}", "✓".green().bold(), message);
+    } else {
+        eprintln!("✓ {}", message);
+    }
+}
+
 /// Print an error message
 pub fn error(message: &str) {
-    if should_use_colors() {
+    if should_use_colors_stderr() {
         eprintln!("{} {}", "✗".red().bold(), message);
     } else {
         eprintln!("✗ {}", message);
     }
 }
 
-/// Print an info message
+/// Print an info message to stdout
 pub fn info(message: &str) {
     if should_use_colors() {
         println!("{} {}", "ℹ".blue().bold(), message);
     } else {
         println!("ℹ {}", message);
+    }
+}
+
+/// Print an info message to stderr
+pub fn info_err(message: &str) {
+    if should_use_colors_stderr() {
+        eprintln!("{} {}", "ℹ".blue().bold(), message);
+    } else {
+        eprintln!("ℹ {}", message);
     }
 }
 
@@ -60,6 +83,7 @@ pub fn format_profile_name(name: &str, is_active: bool) -> String {
 }
 
 /// Format a key-value pair
+#[allow(dead_code)]
 pub fn format_key_value(key: &str, value: &str) -> String {
     if should_use_colors() {
         format!("{}={}", key.yellow(), value)
@@ -69,6 +93,7 @@ pub fn format_key_value(key: &str, value: &str) -> String {
 }
 
 /// Format a section header
+#[allow(dead_code)]
 pub fn format_section_header(title: &str) -> String {
     if should_use_colors() {
         title.bold().underline().to_string()
@@ -92,6 +117,7 @@ pub fn bullet(content: &str) {
 }
 
 /// Print a numbered list item
+#[allow(dead_code)]
 pub fn numbered(number: usize, content: &str) {
     if should_use_colors() {
         println!("  {} {}", format!("{}.", number).cyan(), content);
@@ -101,6 +127,7 @@ pub fn numbered(number: usize, content: &str) {
 }
 
 /// Get a dimmed style for less important text
+#[allow(dead_code)]
 pub fn dimmed_text(text: &str) -> String {
     if should_use_colors() {
         text.dimmed().to_string()
@@ -110,6 +137,7 @@ pub fn dimmed_text(text: &str) -> String {
 }
 
 /// Format a file path
+#[allow(dead_code)]
 pub fn format_path(path: &str) -> String {
     if should_use_colors() {
         path.cyan().to_string()
