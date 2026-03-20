@@ -17,6 +17,12 @@ pub struct EnvFile {
     pub header_comments: Vec<String>, // comments before first key
 }
 
+impl Default for EnvFile {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl EnvFile {
     pub fn new() -> Self {
         Self {

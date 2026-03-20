@@ -1,3 +1,4 @@
+#![allow(deprecated)]
 use graxaim::core::encryption;
 use secrecy::SecretString;
 use std::path::PathBuf;
